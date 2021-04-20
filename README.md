@@ -192,6 +192,8 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
+Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo de red total, al realizar las difirentes solicitudes para el endpoint con los valores propuestos en el punto (1000000,1010000,1020000,1030000,1040000,1050000,1060000,1070000,1080000,1090000), esto diferenciando el ejercicio primeramente realizado con B1ls y despues con B2m al realizar el escalamiento vertical
+
 ### B1ls
 
 ![](images/solucion/consumo.PNG)
@@ -201,8 +203,6 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 ![](images/solucion/consumo2.PNG)
 
 ![Imágen 2](images/part1/part1-vm-cpu.png)
-
-
 
 
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
@@ -217,6 +217,7 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
+	
 ### B1ls
 
 	![](images/solucion/pruebaJson.PNG)
@@ -265,6 +266,10 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
 
+Se presentan dos tablas correspondientes al ejercicio de realizar las solicitudes al endpoint con los valores propuestos en el punto 7, obteniendo como resultado los siguientes datos, la primera tabla corresponde a los valores obtenidos con la opcion B1ls, observando que se tarda bastante por la capacidad de la maquina virtual en relacion a como se esta hayando el numero de Fibonacci, posteriormente al realizar el escalamiento vertical es posible observar como a pesar de contar con el mismo metodo para encontrar el numero de Fibonacci, pero contando con mayor capacidad en la maquina virtual los tiempos disminuyeron de manera optima, sin embargo continuaba tardando bastante, y apesar de representar una mejoria, no es significativa con respecto al la capacida de la maquina virtual inicialmente
+
+La manera en la cual se esta encontrando el numero de Fibonacci es de Complejidad O(n) razon por la cual al enviar solicitudes de numeros grandes tardara bastante al no contar con memorizacion y tener que calcular siempre desde cero las veces que lo necesita en las iteraciones para encontrar el resultado
+
 ### B1ls
 
 | **Caso** | **Tiempo(s)**|
@@ -299,9 +304,29 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+
+El alto consumo de la CPU se debe a que en la operacion de encontrar el numero de Fibonacci, la VM se encuentra realizando por un tiempo prolongado operaciones matematicas de numeros grandes esto en la capacidad de la maquina que contaba con bajas capacidades llegando a valores bastantes altos, de la misma forma aunque mejora con la configuracion de la VM en Bm2, baja el consumo de CPU pero sigue siendo alto para el momento en el cual se encuentra realizando dichas operaciones matematicas
+
+### B1ls
+
+![](images/solucion/consumo.PNG)
+
+### B2m
+
+![](images/solucion/consumo2.PNG)
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
+	
+### B1ls
+
+	![](images/solucion/pruebaJson.PNG)
+
+### B2m
+
+	![](images/solucion/pruebaJson2.PNG)
+	
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
