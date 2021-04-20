@@ -101,44 +101,114 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 ![](images/part1/part1-vm-3000InboudRule.png)
 
 7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
-    * 1000000
+    
+	### B1ls
 	
+	* 1000000
+	
+	![](images/solucion/consola1.PNG)
 	
     * 1010000
 	
+	![](images/solucion/consola2.PNG)
 	
     * 1020000
 	
+	![](images/solucion/consola3.PNG)
 	
     * 1030000
 	
+	![](images/solucion/consola4.PNG)
 	
     * 1040000
 	
+	![](images/solucion/consola5.PNG)
 	
     * 1050000
 	
+	![](images/solucion/consola6.PNG)
 	
     * 1060000
 	
+	![](images/solucion/consola7.PNG)
 	
     * 1070000
 	
+	![](images/solucion/consola8.PNG)
 	
     * 1080000
 	
+	![](images/solucion/consola9.PNG)
 	
     * 1090000    
 	
+	![](images/solucion/consola10.PNG)
 	
+
+### B2m
+
+* 1000000
+	
+	![](images/solucion/consolaDiferente1.PNG)
+	
+    * 1010000
+	
+	![](images/solucion/consolaDiferente2.PNG)
+	
+    * 1020000
+	
+	![](images/solucion/consolaDiferente3.PNG)
+	
+    * 1030000
+	
+	![](images/solucion/consolaDiferente4.PNG)
+	
+    * 1040000
+	
+	![](images/solucion/consolaDiferente5.PNG)
+	
+    * 1050000
+	
+	![](images/solucion/consolaDiferente6.PNG)
+	
+    * 1060000
+	
+	![](images/solucion/consolaDiferente7.PNG)
+	
+    * 1070000
+	
+	![](images/solucion/consolaDiferente8.PNG)
+	
+    * 1080000
+	
+	![](images/solucion/consolaDiferente9.PNG)
+	
+    * 1090000    
+	
+	![](images/solucion/consolaDiferente10.PNG)
+
+
 	
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
+### B1ls
+
+![](images/solucion/consumo.PNG)
+
+### B2m
+
+![](images/solucion/consumo2.PNG)
+
 ![Imágen 2](images/part1/part1-vm-cpu.png)
+
+
+
 
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
     * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
+	
+	
     * Diríjase hasta la ruta `FibonacciApp/postman` en una maquina diferente a la VM.
     * Para el archivo `[ARSW_LOAD-BALANCING_AZURE].postman_environment.json` cambie el valor del parámetro `VM1` para que coincida con la IP de su VM.
     * Ejecute el siguiente comando.
@@ -147,6 +217,13 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
+### B1ls
+
+	![](images/solucion/pruebaJson.PNG)
+
+### B2m
+
+	![](images/solucion/pruebaJson2.PNG)
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
@@ -164,13 +241,63 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 + Maquina Virtual
 + Dirección IP pública
 + Grupo de seguridad de red
-+ Interfaz de red
++ Interfaz de red   
 + Disco
 + Clave SSH
 
 2. ¿Brevemente describa para qué sirve cada recurso?
-3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+
++ Red virtual: Es la red privada de Azure quien permite la comunicacion entre los recursos, el internet y las redes on-premise de forma segura
++ Maquina Virtual: Realiza una emulacion de un computador con sus respectivos componentes y recursos
++ Dirección IP pública: El identificador unico para el ordenador que esta siendo simulado que permite las diferentes conexiones
++ Grupo de seguridad de red: Tiene la tarea de filtrar el trafico de red bajo premisas de seguridad que permiten o restringen dicho trafico de entrada en la red, asi como tambien el trafico de salida
++ Interfaz de red:	Realiza la funcion de conectar la maquina virtual con el internet y recursos del sistema
++ Disco: Tiene el papel de almacenar los distintos datos del sistema	
++ Clave SSH: es un protocolo de conexion cifrada que permite que las conexiones se realicen inicios de secion seguros en un contexto de conexiones que no son consideradas como seguras componiendose de una llave publicda y una llave privada, de manera que al conectarse el cliente SSH se asegura de que la llave privada sea la correcta para asi otorgar el acceso a la VM
+
+3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? 
+
++ Al utilizar el comando `npm FibonacciApp.js` , y cerrar la conexion SSH la aplicacion se detiene ya que el comando corre en dicha consola de la maquina virtual, por ende al teminar la conexion se termina por completo la conexion ya que el SSH hace un llamado a todos los procesos para que se cierren, puede suceder por inactividad, si existe algun error o simplemente por terminar la conexion, es por esto que se utiliza el comando `forever start FibonacciApp.js`, para que sea posible que siga en ejecucion el script sin importar si se cierra la conexion siempre y cuando la maquina virtual este encendida
+
+¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+
++ Se debia agregar este *Inbound port rule* para permitir la conexion al servicio por el puerto 3000 como se realizo en este caso, ademas de poder elegir por que protocolo se recibira o denegara segun la eleccion que se realice es una forma de personalizar la conexion (el trafico de red) segun la necesidad
+
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+
+### B1ls
+
+| **Caso** | **Tiempo(s)**|
+|---------|--------|
+| 6 | 0.344 |
+| 1000000 | 25.71 |
+| 1010000 | 26.09 |
+| 1020000 | 26.97 |
+| 1030000 | 27.85 |
+| 1040000 | 26.98 |
+| 1050000 | 28.84 |
+| 1060000 | 29.36 |
+| 1070000 | 30.10 |
+| 1080000 | 32.38 |
+| 1090000 | 31.52 |
+
+### B2m
+
+| **Caso**    | **Tiempo(s)** |
+|---------|-----------|
+| 6 	  | 0.344     |
+| 1000000 | 23.19 	  |
+| 1010000 | 23.55     |
+| 1020000 | 24.27     |
+| 1030000 | 26.03     |
+| 1040000 | 25.29     |
+| 1050000 | 26.74     |
+| 1060000 | 26.67     |
+| 1070000 | 27.17     |
+| 1080000 | 27.92     |
+| 1090000 | 28.27     |
+
+
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
