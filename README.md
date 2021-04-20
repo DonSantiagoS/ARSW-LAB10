@@ -11,7 +11,7 @@
 
 De manera gratuita con Imagine Azure se creo la cuenta estudiantil gratuita para llevar a cabo la solucion del laboratorio
 
-![](images/solucion/nuevaCuenta.PNG)
+![](images/solucion/cuentaNueva.PNG)
 
 Una vez creada la cuenta se procede a iniciar con el desarrollo del Laboratorio
 
@@ -32,13 +32,24 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     * Username = scalability_lab
     * SSH publi key = Su llave ssh publica
 
+
+![](images/solucion/parte01.PNG)
+
+![](images/solucion/maquina1.PNG)
+![](images/solucion/maquina2.PNG)
+
+
 ![Imágen 1](images/part1/part1-vm-basic-config.png)
 
 2. Para conectarse a la VM use el siguiente comando, donde las `x` las debe remplazar por la IP de su propia VM.
 
     `ssh scalability_lab@xxx.xxx.xxx.xxx`
+	
+	![](images/solucion/connecion.PNG)
 
 3. Instale node, para ello siga la sección *Installing Node.js and npm using NVM* que encontrará en este [enlace](https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/).
+	
+	![](images/solucion/nodeInstalado.PNG)
 	
 	Estando conectado a la maquina virtual instalar Node.js y npm usando NVM con el siguiente comando:
 	
@@ -94,9 +105,15 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 
+##B1ls
+
 ![](images/solucion/prueba1.PNG)
 
 ![](images/solucion/add.PNG)
+
+##B2ms
+
+![](images/solucion/consolaSegundos.PNG)
 
 ![](images/part1/part1-vm-3000InboudRule.png)
 
@@ -145,7 +162,7 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 	![](images/solucion/consola10.PNG)
 	
 
-### B2m
+### B2ms
 
 * 1000000
 	
@@ -192,13 +209,13 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
-Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo de red total, al realizar las difirentes solicitudes para el endpoint con los valores propuestos en el punto (1000000,1010000,1020000,1030000,1040000,1050000,1060000,1070000,1080000,1090000), esto diferenciando el ejercicio primeramente realizado con B1ls y despues con B2m al realizar el escalamiento vertical
+Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo de red total, al realizar las difirentes solicitudes para el endpoint con los valores propuestos en el punto (1000000,1010000,1020000,1030000,1040000,1050000,1060000,1070000,1080000,1090000), esto diferenciando el ejercicio primeramente realizado con B1ls y despues con B2ms al realizar el escalamiento vertical
 
 ### B1ls
 
 ![](images/solucion/consumo.PNG)
 
-### B2m
+### B2ms
 
 ![](images/solucion/consumo2.PNG)
 
@@ -222,11 +239,14 @@ Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo
 
 	![](images/solucion/pruebaJson.PNG)
 
-### B2m
+### B2ms
 
 	![](images/solucion/pruebaJson2.PNG)
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
+
+
+![](images/solucion/resize.PNG)
 
 ![Imágen 3](images/part1/part1-vm-resize.png)
 
@@ -274,7 +294,7 @@ La manera en la cual se esta encontrando el numero de Fibonacci es de Complejida
 
 | **Caso** | **Tiempo(s)**|
 |---------|--------|
-| 6 | 0.344 |
+| 6 	  | 0.344 |
 | 1000000 | 25.71 |
 | 1010000 | 26.09 |
 | 1020000 | 26.97 |
@@ -286,7 +306,7 @@ La manera en la cual se esta encontrando el numero de Fibonacci es de Complejida
 | 1080000 | 32.38 |
 | 1090000 | 31.52 |
 
-### B2m
+### B2ms
 
 | **Caso**    | **Tiempo(s)** |
 |---------|-----------|
@@ -311,7 +331,7 @@ El alto consumo de la CPU se debe a que en la operacion de encontrar el numero d
 
 ![](images/solucion/consumo.PNG)
 
-### B2m
+### B2ms
 
 ![](images/solucion/consumo2.PNG)
 
@@ -319,19 +339,51 @@ El alto consumo de la CPU se debe a que en la operacion de encontrar el numero d
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
 	
+	En la ejecucion del Postman usando Newman, se obtuvieron los resultados que se presentan en las imagenes a cotinuacion:
+	
 ### B1ls
-
+	
+	![](images/solucion/proceso1.PNG)
 	![](images/solucion/pruebaJson.PNG)
+	
+	Primeramente con la capacidad de B1ls en la VM, obtenemos el resultado que se puede apreciar alli el cual representa un promedio de **26.5 segundos** por solicitud, para tener una duracion total en las 10 iteraciones de 4 minutos con 24.4 segundos, en esta coasion los 10 ejecutados compilaron y obtuvieron un resultado exitoso
 
-### B2m
+### B2ms
 
 	![](images/solucion/pruebaJson2.PNG)
 	
+	Ahora bien, con la capacidad de B2ms en la VM, se obtuvo el resultado que se puede apreciar en el cual se obtiene un tiempo promedio por interacion de **23.9 segundos** , obteniendo como duracion total 4 minutos con 2.9 segundos en el procesamiento total de las 10 iteraciones
+	
+	Bajo estos resultados obtenidos es posible evidenciar una mejora con el escalamiento vertical, ya que la disminucion en el tiempo de ejecucion es importante, sin embargo no es tan siginificativa como se esperaba, pero es posible evidenciar una muestra de como el escalamiento vertical realiza una optimizacion de tiempos
+	
+	**Nota:** En el procesamiento de estas solicitudes, al realizar el ejercicio de concurrencia en algunos casos se presentaron errores aparatemente por dicha concurrencia, ya que la VM se quedaba sin recursos necesarios para responder la solicitud razon por la cual se presentaban errores por el alto consumo de la CPU el cual fue posible evidenciar mientras se hacian las solicitudes contando con un procentaje superior al 70 durante las solicitudes concurrentes.
+	
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
+
+| Tamaño| Vcpu | RAM(GiB) | Discos de datos max | Gib de Almacenamiento temporal (SSD) | Base CPU Perf of VM |Rendimiento máximo de almacenamiento temporal y en caché: IOPS / MBps| Rendimiento máximo del disco sin almacenamiento en la caché: IOPS / MBps|   Costo    |
+|-------|------|----------|---------------------|--------------------------------------|---------------------|---------------------------------------------------------------------|-------------------------------------------------------------------------|------------| 
+| B1ls  |  1   |   0.5    | 		2           | 				4                      | 		5%			 |					200/10											   |								160/10	                             	 | 	$ 3.80 UD |
+| B2ms  |  2   |    8     | 		3           | 				16                     | 		60%          |					2400/22.5$ 										   |  								1920/22.5								 |  $ 60.74 US|
+
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+
+Es una buena solución para reducir la carga del servidor y obtener tiempos de respuesta más rápidos porque el nuevo tamaño permite completar más operaciones en menos tiempo. Sin embargo, el sistema tampoco admite que muchos usuarios envíen solicitudes al mismo tiempo sin afectar el tiempo o la cantidad de respuesta.
+
+La aplicacion de Fibonacci se detiene a pesar de haber puesto forever ya que la VM cambio de tamaño y se debe reiniciar, razon por la cual el servicio se detiene
+
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+
+La Maquina Virtual debe reiniciarse para poder cambiar su tamaño, lo que representa negativamente que el servicio no esté disponible durante el escalamiento vertical lo que podria representar sobrecostos y falta de disponibilidad
+
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+
+Se presento una mejora tanto en el consumo de CPU como tambien en los tiempos de respuesta para la solicitudes, sin embargo a pesar de mejorar con el escalamiento vertical, no representa una mejora realmente significativa ya que aun tarda bastante en las solicitudes y el consumo de CPU continua siendo alto para la operacion de la Aplicacion de Fibonacci
+
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
+
+![](images/solucion/con4.PNG)
+
+Al aumental la cantidad de solicitudes paralelas a 4m el comportamiento del sistema aumenta el tiempo de respuesta siginificativamente de igual manera los recusos no son sufucientes por lo que lanza bastantes errores al no poder responder tantas solicitudes al tiempo, como es posible evidenciar en la anterior imagen en 10 iteraciones fallo en 4, ademas de contar con un tiempo total de 8 minutos con 31.5 segundos lo que representa el doble que se habia tardado solo con 2 solicitudes paralelas,  contando con un tiempo promedio de 1 minuto con 7.7 segundos por solicitud, sin embargo con respecto al uso de la CPU el porcentaje de uso se optimiza al disminuir en las solicitudes realizadas
 
 ### Parte 2 - Escalabilidad horizontal
 
@@ -341,13 +393,25 @@ Antes de continuar puede eliminar el grupo de recursos anterior para evitar gast
 
 1. El Balanceador de Carga es un recurso fundamental para habilitar la escalabilidad horizontal de nuestro sistema, por eso en este paso cree un balanceador de carga dentro de Azure tal cual como se muestra en la imágen adjunta.
 
+![](images/solucion/PARTE2.PNG)
+
+![](images/solucion/parte21.PNG)
+
+![](images/solucion/balancer.PNG)
+
+![](images/solucion/3compus.PNG)
+
 ![](images/part2/part2-lb-create.png)
 
 2. A continuación cree un *Backend Pool*, guiese con la siguiente imágen.
 
+![](images/solucion/pool.PNG)
+
 ![](images/part2/part2-lb-bp-create.png)
 
 3. A continuación cree un *Health Probe*, guiese con la siguiente imágen.
+
+![](images/solucion/health.PNG)
 
 ![](images/part2/part2-lb-hp-create.png)
 
@@ -357,6 +421,11 @@ Antes de continuar puede eliminar el grupo de recursos anterior para evitar gast
 
 5. Cree una *Virtual Network* dentro del grupo de recursos, guiese con la siguiente imágen.
 
+
+![](images/solucion/virtualn1.PNG)
+
+![](images/solucion/virtualn2.PNG)
+
 ![](images/part2/part2-vn-create.png)
 
 #### Crear las maquinas virtuales (Nodos)
@@ -365,9 +434,32 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 
 1. En la configuración básica de la VM guíese por la siguiente imágen. Es importante que se fije en la "Avaiability Zone", donde la VM1 será 1, la VM2 será 2 y la VM3 será 3.
 
+##VM1
+
+![](images/solucion/vm1load.PNG)
+![](images/solucion/vm1.PNG)
+
+##VM2
+
+![](images/solucion/vm2.PNG)
+
+##VM3
+![](images/solucion/vm3.PNG)
+
+![](images/solucion/vm3load.PNG)
+
 ![](images/part2/part2-vm-create1.png)
 
 2. En la configuración de networking, verifique que se ha seleccionado la *Virtual Network*  y la *Subnet* creadas anteriormente. Adicionalmente asigne una IP pública y no olvide habilitar la redundancia de zona.
+
+##VM1
+
+![](images/solucion/vm1net.PNG)
+
+##VM2
+
+##VM3
+![](images/solucion/vm3net.PNG)
 
 ![](images/part2/part2-vm-create2.png)
 
@@ -395,6 +487,14 @@ npm install forever -g
 forever start FibonacciApp.js
 ```
 
+![](images/solucion/vm1Terminada.PNG)
+
+![](images/solucion/vm2Terminada.PNG)
+
+![](images/solucion/vm3Terminada.PNG)
+
+![](images/solucion/3maquinas.PNG)
+
 Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, sin embargo es importante que usted sepa que existen herramientas para aumatizar este proceso, entre ellas encontramos Azure Resource Manager, OsDisk Images, Terraform con Vagrant y Paker, Puppet, Ansible entre otras.
 
 #### Probar el resultado final de nuestra infraestructura
@@ -403,12 +503,35 @@ Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, si
 
 ```
 http://52.155.223.248/
+```
+
+![](images/solucion/loadSirveSolo.PNG)
+
+```
 http://52.155.223.248/fibonacci/1
 ```
+![](images/solucion/sirvioLoad.PNG)
+
 
 2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.
 
+![](images/solucion/loadCompleto1.PNG)
+
+![](images/solucion/completoUltimoUno.PNG)
+
+![](images/solucion/completoUltimoDos.PNG)
+
+![](images/solucion/los4Simultaneo.PNG)
+
+![](images/solucion/los4sa.PNG)
+
+![](images/solucion/parte2soloUno.PNG)
+
+![](images/solucion/parte2soloDos.PNG)
+
 3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.
+
+![](images/solucion/maquinas.PNG)
 
 ```
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
