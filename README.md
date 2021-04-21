@@ -36,6 +36,7 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 ![](images/solucion/parte01.PNG)
 
 ![](images/solucion/maquina1.PNG)
+
 ![](images/solucion/maquina2.PNG)
 
 
@@ -106,14 +107,14 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 
 
-#B1ls
+### B1ls
 
 
 ![](images/solucion/prueba1.PNG)
 
 ![](images/solucion/add.PNG)
 
-#B2ms
+### B2ms
 
 ![](images/solucion/consolaSegundos.PNG)
 
@@ -280,11 +281,11 @@ Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo
 
 3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? 
 
-	+ Al utilizar el comando `npm FibonacciApp.js` , y cerrar la conexion SSH la aplicacion se detiene ya que el comando corre en dicha consola de la maquina virtual, por ende al teminar la conexion se termina por completo la conexion ya que el SSH hace un llamado a todos los procesos para que se cierren, puede suceder por inactividad, si existe algun error o simplemente por terminar la conexion, es por esto que se utiliza el comando `forever start FibonacciApp.js`, para que sea posible que siga en ejecucion el script sin importar si se cierra la conexion siempre y cuando la maquina virtual este encendida
+	Al utilizar el comando `npm FibonacciApp.js` , y cerrar la conexion SSH la aplicacion se detiene ya que el comando corre en dicha consola de la maquina virtual, por ende al teminar la conexion se termina por completo la conexion ya que el SSH hace un llamado a todos los procesos para que se cierren, puede suceder por inactividad, si existe algun error o simplemente por terminar la conexion, es por esto que se utiliza el comando `forever start FibonacciApp.js`, para que sea posible que siga en ejecucion el script sin importar si se cierra la conexion siempre y cuando la maquina virtual este encendida
 
 ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
 
-	+ Se debia agregar este *Inbound port rule* para permitir la conexion al servicio por el puerto 3000 como se realizo en este caso, ademas de poder elegir por que protocolo se recibira o denegara segun la eleccion que se realice es una forma de personalizar la conexion (el trafico de red) segun la necesidad
+	Se debia agregar este *Inbound port rule* para permitir la conexion al servicio por el puerto 3000 como se realizo en este caso, ademas de poder elegir por que protocolo se recibira o denegara segun la eleccion que se realice es una forma de personalizar la conexion (el trafico de red) segun la necesidad
 
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
 
@@ -438,17 +439,17 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 
 1. En la configuración básica de la VM guíese por la siguiente imágen. Es importante que se fije en la "Avaiability Zone", donde la VM1 será 1, la VM2 será 2 y la VM3 será 3.
 
-###VM1
+### VM1
 
 ![](images/solucion/vm1load.PNG)
 
 ![](images/solucion/vm1.PNG)
 
-###VM2
+### VM2
 
 ![](images/solucion/vm2.PNG)
 
-###VM3
+### VM3
 
 ![](images/solucion/vm3.PNG)
 
@@ -458,15 +459,15 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 
 2. En la configuración de networking, verifique que se ha seleccionado la *Virtual Network*  y la *Subnet* creadas anteriormente. Adicionalmente asigne una IP pública y no olvide habilitar la redundancia de zona.
 
-###VM1
+### VM1
 
 ![](images/solucion/vm1net.PNG)
 
-###VM2
+### VM2
 
 ![](images/solucion/vm1net.PNG)
 
-###VM3
+### VM3
 
 ![](images/solucion/vm3net.PNG)
 
@@ -561,9 +562,9 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 		
 	Azure Container Registry está disponible en una variedad de niveles de servicio (también conocidos como SKU). SKU (Stock Keeping Unit) es un código único asignado a un servicio o producto dentro de azure que representa la capacidad de adquirir existencias.
 		
-		+ Basico: Un punto de entrada con bajos costos para que los desarrolladores aprendan sobre Azure Container Registry. Los registros básicos tienen las mismas capacidades de programación que los registros estándar y premium.
-		+ Estandar: Los registros estándar tienen las mismas capacidades que los registros básicos, pero con un mayor rendimiento de imágenes y almacenamiento incluido. Los registros estándar deben satisfacer las necesidades de la gran mayoría de estudios de producción.
-		+ Premium: Los registros premium proporcionan la mayor cantidad de almacenamiento incluido y operaciones simultáneas, lo que permite producciones a gran escala. Además de un mayor rendimiento de imágenes, también incluye características como la replicación geoespacial para administrar un solo registro en múltiples regiones y confianza en el contenido para el desarrollo de etiquetas de imagen, enlace privado con puntos finales privados para restringir el acceso al registro.
+	**Basico:** Un punto de entrada con bajos costos para que los desarrolladores aprendan sobre Azure Container Registry. Los registros básicos tienen las mismas capacidades de programación que los registros estándar y premium.
+	**Estandar:** Los registros estándar tienen las mismas capacidades que los registros básicos, pero con un mayor rendimiento de imágenes y almacenamiento incluido. Los registros estándar deben satisfacer las necesidades de la gran mayoría de estudios de producción.
+	**Premium:** Los registros premium proporcionan la mayor cantidad de almacenamiento incluido y operaciones simultáneas, lo que permite producciones a gran escala. Además de un mayor rendimiento de imágenes, también incluye características como la replicación geoespacial para administrar un solo registro en múltiples regiones y confianza en el contenido para el desarrollo de etiquetas de imagen, enlace privado con puntos finales privados para restringir el acceso al registro.
 		
 	Azure presenta la siguiente de los diferentes Sku:
 		
@@ -670,19 +671,19 @@ Posteriormente se realizo una prueba de 4 solicitudes concurrentes paralelas en 
 
 Contando con el siguiente rendimiento de CPU en cada maquina respectiva:
 
-###VM1
+### VM1
 
 ![](images/solucion/consumoParalelovm4.JPG) 
 
-###VM2
+### VM2
 
 ![](images/solucion/consumoParalelovm2.JPG)
 
-###VM3
+### VM3
 
 ![](images/solucion/consumoParalelovm1.JPG)
-
-###VM4
+ 
+### VM4
 
 ![](images/solucion/consumoParalelovm2.JPG)
 
@@ -691,7 +692,7 @@ Contando con el siguiente rendimiento de CPU en cada maquina respectiva:
 
 ![](images/solucion/solucion.PNG)
 
-
+ 
 # Control de versiones
 
 por: [Santiago Buitrago](https://github.com/DonSantiagoS) 
