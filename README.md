@@ -679,6 +679,7 @@ Contando con el siguiente rendimiento de CPU en cada maquina respectiva:
 
 * Presente el Diagrama de Despliegue de la solución.
 
+![](images/solucion/solucion.PNG)
 
 
 # Control de versiones
