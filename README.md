@@ -105,13 +105,15 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 
-##B1ls
+
+#B1ls
+
 
 ![](images/solucion/prueba1.PNG)
 
 ![](images/solucion/add.PNG)
 
-##B2ms
+#B2ms
 
 ![](images/solucion/consolaSegundos.PNG)
 
@@ -237,11 +239,11 @@ Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo
 	
 ### B1ls
 
-	![](images/solucion/pruebaJson.PNG)
+![](images/solucion/pruebaJson.PNG)
 
 ### B2ms
 
-	![](images/solucion/pruebaJson2.PNG)
+![](images/solucion/pruebaJson2.PNG)
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
@@ -258,37 +260,37 @@ Las siguientes imagenes corresponden al consumo de la CPU en la VM, y el consumo
 
 1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
 
-+ Red virtual
-+ Maquina Virtual
-+ Dirección IP pública
-+ Grupo de seguridad de red
-+ Interfaz de red   
-+ Disco
-+ Clave SSH
+	+ Red virtual
+	+ Maquina Virtual
+	+ Dirección IP pública
+	+ Grupo de seguridad de red
+	+ Interfaz de red   
+	+ Disco
+	+ Clave SSH
 
 2. ¿Brevemente describa para qué sirve cada recurso?
 
-+ Red virtual: Es la red privada de Azure quien permite la comunicacion entre los recursos, el internet y las redes on-premise de forma segura
-+ Maquina Virtual: Realiza una emulacion de un computador con sus respectivos componentes y recursos
-+ Dirección IP pública: El identificador unico para el ordenador que esta siendo simulado que permite las diferentes conexiones
-+ Grupo de seguridad de red: Tiene la tarea de filtrar el trafico de red bajo premisas de seguridad que permiten o restringen dicho trafico de entrada en la red, asi como tambien el trafico de salida
-+ Interfaz de red:	Realiza la funcion de conectar la maquina virtual con el internet y recursos del sistema
-+ Disco: Tiene el papel de almacenar los distintos datos del sistema	
-+ Clave SSH: es un protocolo de conexion cifrada que permite que las conexiones se realicen inicios de secion seguros en un contexto de conexiones que no son consideradas como seguras componiendose de una llave publicda y una llave privada, de manera que al conectarse el cliente SSH se asegura de que la llave privada sea la correcta para asi otorgar el acceso a la VM
+	+ Red virtual: Es la red privada de Azure quien permite la comunicacion entre los recursos, el internet y las redes on-premise de forma segura
+	+ Maquina Virtual: Realiza una emulacion de un computador con sus respectivos componentes y recursos
+	+ Dirección IP pública: El identificador unico para el ordenador que esta siendo simulado que permite las diferentes conexiones
+	+ Grupo de seguridad de red: Tiene la tarea de filtrar el trafico de red bajo premisas de seguridad que permiten o restringen dicho trafico de entrada en la red, asi como tambien el trafico de salida
+	+ Interfaz de red:	Realiza la funcion de conectar la maquina virtual con el internet y recursos del sistema
+	+ Disco: Tiene el papel de almacenar los distintos datos del sistema	
+	+ Clave SSH: es un protocolo de conexion cifrada que permite que las conexiones se realicen inicios de secion seguros en un contexto de conexiones que no son consideradas como seguras componiendose de una llave publicda y una llave privada, de manera que al conectarse el cliente SSH se asegura de que la llave privada sea la correcta para asi otorgar el acceso a la VM
 
 3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? 
 
-+ Al utilizar el comando `npm FibonacciApp.js` , y cerrar la conexion SSH la aplicacion se detiene ya que el comando corre en dicha consola de la maquina virtual, por ende al teminar la conexion se termina por completo la conexion ya que el SSH hace un llamado a todos los procesos para que se cierren, puede suceder por inactividad, si existe algun error o simplemente por terminar la conexion, es por esto que se utiliza el comando `forever start FibonacciApp.js`, para que sea posible que siga en ejecucion el script sin importar si se cierra la conexion siempre y cuando la maquina virtual este encendida
+	+ Al utilizar el comando `npm FibonacciApp.js` , y cerrar la conexion SSH la aplicacion se detiene ya que el comando corre en dicha consola de la maquina virtual, por ende al teminar la conexion se termina por completo la conexion ya que el SSH hace un llamado a todos los procesos para que se cierren, puede suceder por inactividad, si existe algun error o simplemente por terminar la conexion, es por esto que se utiliza el comando `forever start FibonacciApp.js`, para que sea posible que siga en ejecucion el script sin importar si se cierra la conexion siempre y cuando la maquina virtual este encendida
 
 ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
 
-+ Se debia agregar este *Inbound port rule* para permitir la conexion al servicio por el puerto 3000 como se realizo en este caso, ademas de poder elegir por que protocolo se recibira o denegara segun la eleccion que se realice es una forma de personalizar la conexion (el trafico de red) segun la necesidad
+	+ Se debia agregar este *Inbound port rule* para permitir la conexion al servicio por el puerto 3000 como se realizo en este caso, ademas de poder elegir por que protocolo se recibira o denegara segun la eleccion que se realice es una forma de personalizar la conexion (el trafico de red) segun la necesidad
 
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
 
-Se presentan dos tablas correspondientes al ejercicio de realizar las solicitudes al endpoint con los valores propuestos en el punto 7, obteniendo como resultado los siguientes datos, la primera tabla corresponde a los valores obtenidos con la opcion B1ls, observando que se tarda bastante por la capacidad de la maquina virtual en relacion a como se esta hayando el numero de Fibonacci, posteriormente al realizar el escalamiento vertical es posible observar como a pesar de contar con el mismo metodo para encontrar el numero de Fibonacci, pero contando con mayor capacidad en la maquina virtual los tiempos disminuyeron de manera optima, sin embargo continuaba tardando bastante, y apesar de representar una mejoria, no es significativa con respecto al la capacida de la maquina virtual inicialmente
+	Se presentan dos tablas correspondientes al ejercicio de realizar las solicitudes al endpoint con los valores propuestos en el punto 7, obteniendo como resultado los siguientes datos, la primera tabla corresponde a los valores obtenidos con la opcion B1ls, observando que se tarda bastante por la capacidad de la maquina virtual en relacion a como se esta hayando el numero de Fibonacci, posteriormente al realizar el escalamiento vertical es posible observar como a pesar de contar con el mismo metodo para encontrar el numero de Fibonacci, pero contando con mayor capacidad en la maquina virtual los tiempos disminuyeron de manera optima, sin embargo continuaba tardando bastante, y apesar de representar una mejoria, no es significativa con respecto al la capacida de la maquina virtual inicialmente
 
-La manera en la cual se esta encontrando el numero de Fibonacci es de Complejidad O(n) razon por la cual al enviar solicitudes de numeros grandes tardara bastante al no contar con memorizacion y tener que calcular siempre desde cero las veces que lo necesita en las iteraciones para encontrar el resultado
+	La manera en la cual se esta encontrando el numero de Fibonacci es de Complejidad O(n) razon por la cual al enviar solicitudes de numeros grandes tardara bastante al no contar con memorizacion y tener que calcular siempre desde cero las veces que lo necesita en las iteraciones para encontrar el resultado
 
 ### B1ls
 
@@ -343,14 +345,15 @@ El alto consumo de la CPU se debe a que en la operacion de encontrar el numero d
 	
 ### B1ls
 	
-	![](images/solucion/proceso1.PNG)
-	![](images/solucion/pruebaJson.PNG)
+![](images/solucion/proceso1.PNG)
+
+![](images/solucion/pruebaJson.PNG)
 	
 	Primeramente con la capacidad de B1ls en la VM, obtenemos el resultado que se puede apreciar alli el cual representa un promedio de **26.5 segundos** por solicitud, para tener una duracion total en las 10 iteraciones de 4 minutos con 24.4 segundos, en esta coasion los 10 ejecutados compilaron y obtuvieron un resultado exitoso
 
 ### B2ms
 
-	![](images/solucion/pruebaJson2.PNG)
+![](images/solucion/pruebaJson2.PNG)
 	
 	Ahora bien, con la capacidad de B2ms en la VM, se obtuvo el resultado que se puede apreciar en el cual se obtiene un tiempo promedio por interacion de **23.9 segundos** , obteniendo como duracion total 4 minutos con 2.9 segundos en el procesamiento total de las 10 iteraciones
 	
@@ -367,17 +370,17 @@ El alto consumo de la CPU se debe a que en la operacion de encontrar el numero d
 
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
 
-Es una buena solución para reducir la carga del servidor y obtener tiempos de respuesta más rápidos porque el nuevo tamaño permite completar más operaciones en menos tiempo. Sin embargo, el sistema tampoco admite que muchos usuarios envíen solicitudes al mismo tiempo sin afectar el tiempo o la cantidad de respuesta.
+	Es una buena solución para reducir la carga del servidor y obtener tiempos de respuesta más rápidos porque el nuevo tamaño permite completar más operaciones en menos tiempo. Sin embargo, el sistema tampoco admite que muchos usuarios envíen solicitudes al mismo tiempo sin afectar el tiempo o la cantidad de respuesta.
 
-La aplicacion de Fibonacci se detiene a pesar de haber puesto forever ya que la VM cambio de tamaño y se debe reiniciar, razon por la cual el servicio se detiene
+	La aplicacion de Fibonacci se detiene a pesar de haber puesto forever ya que la VM cambio de tamaño y se debe reiniciar, razon por la cual el servicio se detiene
 
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
 
-La Maquina Virtual debe reiniciarse para poder cambiar su tamaño, lo que representa negativamente que el servicio no esté disponible durante el escalamiento vertical lo que podria representar sobrecostos y falta de disponibilidad
+	La Maquina Virtual debe reiniciarse para poder cambiar su tamaño, lo que representa negativamente que el servicio no esté disponible durante el escalamiento vertical lo que podria representar sobrecostos y falta de disponibilidad
 
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
 
-Se presento una mejora tanto en el consumo de CPU como tambien en los tiempos de respuesta para la solicitudes, sin embargo a pesar de mejorar con el escalamiento vertical, no representa una mejora realmente significativa ya que aun tarda bastante en las solicitudes y el consumo de CPU continua siendo alto para la operacion de la Aplicacion de Fibonacci
+	Se presento una mejora tanto en el consumo de CPU como tambien en los tiempos de respuesta para la solicitudes, sin embargo a pesar de mejorar con el escalamiento vertical, no representa una mejora realmente significativa ya que aun tarda bastante en las solicitudes y el consumo de CPU continua siendo alto para la operacion de la Aplicacion de Fibonacci
 
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
 
@@ -435,16 +438,18 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 
 1. En la configuración básica de la VM guíese por la siguiente imágen. Es importante que se fije en la "Avaiability Zone", donde la VM1 será 1, la VM2 será 2 y la VM3 será 3.
 
-##VM1
+###VM1
 
 ![](images/solucion/vm1load.PNG)
+
 ![](images/solucion/vm1.PNG)
 
-##VM2
+###VM2
 
 ![](images/solucion/vm2.PNG)
 
-##VM3
+###VM3
+
 ![](images/solucion/vm3.PNG)
 
 ![](images/solucion/vm3load.PNG)
@@ -453,15 +458,16 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 
 2. En la configuración de networking, verifique que se ha seleccionado la *Virtual Network*  y la *Subnet* creadas anteriormente. Adicionalmente asigne una IP pública y no olvide habilitar la redundancia de zona.
 
-##VM1
+###VM1
 
 ![](images/solucion/vm1net.PNG)
 
-##VM2
+###VM2
 
 ![](images/solucion/vm1net.PNG)
 
-##VM3
+###VM3
+
 ![](images/solucion/vm3net.PNG)
 
 ![](images/part2/part2-vm-create2.png)
@@ -547,20 +553,21 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 
 * ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?  
 
-		+ **Equilibrador de carga público:** Proporciona conexiones de salida para máquinas virtuales dentro de la red virtual, dichas conexiones se establecen convirtiendo sus direcciones IP privadas en direcciones IP públicas.
-		+ **Equilibrador de carga privado:** Se utiliza para equilibrar el trafico dentro de la red virtual tambien cuando solo se necesitan direcciones IP privadas en el front-end.
+	**Equilibrador de carga público:** Proporciona conexiones de salida para máquinas virtuales dentro de la red virtual, dichas conexiones se establecen convirtiendo sus direcciones IP privadas en direcciones IP públicas.
+	
+	**Equilibrador de carga privado:** Se utiliza para equilibrar el trafico dentro de la red virtual tambien cuando solo se necesitan direcciones IP privadas en el front-end.
 
 * ¿Qué es SKU, qué tipos hay y en qué se diferencian?
 		
-		Azure Container Registry está disponible en una variedad de niveles de servicio (también conocidos como SKU). SKU (Stock Keeping Unit) es un código único asignado a un servicio o producto dentro de azure que representa la capacidad de adquirir existencias.
+	Azure Container Registry está disponible en una variedad de niveles de servicio (también conocidos como SKU). SKU (Stock Keeping Unit) es un código único asignado a un servicio o producto dentro de azure que representa la capacidad de adquirir existencias.
 		
 		+ Basico: Un punto de entrada con bajos costos para que los desarrolladores aprendan sobre Azure Container Registry. Los registros básicos tienen las mismas capacidades de programación que los registros estándar y premium.
 		+ Estandar: Los registros estándar tienen las mismas capacidades que los registros básicos, pero con un mayor rendimiento de imágenes y almacenamiento incluido. Los registros estándar deben satisfacer las necesidades de la gran mayoría de estudios de producción.
 		+ Premium: Los registros premium proporcionan la mayor cantidad de almacenamiento incluido y operaciones simultáneas, lo que permite producciones a gran escala. Además de un mayor rendimiento de imágenes, también incluye características como la replicación geoespacial para administrar un solo registro en múltiples regiones y confianza en el contenido para el desarrollo de etiquetas de imagen, enlace privado con puntos finales privados para restringir el acceso al registro.
 		
-		Azure presenta la siguiente de los diferentes Sku:
+	Azure presenta la siguiente de los diferentes Sku:
 		
-		![](images/solucion/sku.PNG)
+![](images/solucion/sku.PNG)
 	
 * ¿Por qué el balanceador de carga necesita una IP pública?
 	
@@ -576,47 +583,47 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 
 * ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
 
-Define la configuración de IP de interfaz para el tráfico entrante y el grupo de back-end para recibir el tráfico, junto con el puerto de origen y destino requerido. Para Azure Load Balancer, el modo de distribución predeterminado es un hash de tuplas con cinco elementos. Los siguientes son los contenidos de la tupla:
+	Define la configuración de IP de interfaz para el tráfico entrante y el grupo de back-end para recibir el tráfico, junto con el puerto de origen y destino requerido. Para Azure Load Balancer, el modo de distribución predeterminado es un hash de tuplas con cinco elementos. Los siguientes son los contenidos de la tupla:
 
-+ IP de origen
-+ Puerto de origen
-+ IP de destino
-+ Puerto de destino
-+ Tipo de protocolo
+		+ IP de origen
+		+ Puerto de origen
+		+ IP de destino
+		+ Puerto de destino
+		+ Tipo de protocolo
 
-Proporciona equilibrio de carga entrante y la regla de salida controla el NAT saliente proporcionado para la VM. Este inicio rápido utiliza dos grupos de backend separados, uno para entrada y otro para salida, para ilustrar la capacidad y permitir flexibilidad para este escenario. Con las reglas de salida establecidas, tiene un poder declarativo completo sobre la conectividad a Internet. Las reglas de salida le permiten escalar y ajustar esta capacidad a sus necesidades específicas.
+	Proporciona equilibrio de carga entrante y la regla de salida controla el NAT saliente proporcionado para la VM. Este inicio rápido utiliza dos grupos de backend separados, uno para entrada y otro para salida, para ilustrar la capacidad y permitir flexibilidad para este escenario. Con las reglas de salida establecidas, tiene un poder declarativo completo sobre la conectividad a Internet. Las reglas de salida le permiten escalar y ajustar esta capacidad a sus necesidades específicas.
 
-El hash se utiliza para distribuir el tráfico entre los servidores disponibles. El algoritmo solo proporciona adhesión dentro de una única sesión de transporte. Siguiendo el punto de conexión con equilibrio de carga, todos los paquetes de una misma sesión se envían a la misma dirección IP del centro de datos. Cuando un cliente inicia una nueva sesión desde la misma dirección IP, el puerto de origen cambia, lo que hace que el tráfico fluya a otro punto de conexión en el centro de datos.
+	El hash se utiliza para distribuir el tráfico entre los servidores disponibles. El algoritmo solo proporciona adhesión dentro de una única sesión de transporte. Siguiendo el punto de conexión con equilibrio de carga, todos los paquetes de una misma sesión se envían a la misma dirección IP del centro de datos. Cuando un cliente inicia una nueva sesión desde la misma dirección IP, el puerto de origen cambia, lo que hace que el tráfico fluya a otro punto de conexión en el centro de datos.
 
-Para asignar tráfico a los servidores disponibles, el modo utiliza un hash de tupla de dos elementos (IP de origen e IP de destino) o tres elementos (IP de origen, IP de destino y tipo de protocolo). Las conexiones que han comenzado desde el mismo equipo del cliente van al mismo punto de conexión en el centro de datos gracias al uso de la similitud de la IP de origen.
+	Para asignar tráfico a los servidores disponibles, el modo utiliza un hash de tupla de dos elementos (IP de origen e IP de destino) o tres elementos (IP de origen, IP de destino y tipo de protocolo). Las conexiones que han comenzado desde el mismo equipo del cliente van al mismo punto de conexión en el centro de datos gracias al uso de la similitud de la IP de origen.
 
 * ¿Qué es una *Virtual Network*?  
 
-Azure Virtual Network proporciona un entorno seguro y aislado en el que ejecutar aplicaciones y máquinas virtuales. Utilice sus propias direcciones IP privadas y defina subredes, directivas de control de acceso, etc. Para usar Azure como su propio centro de datos, cree una red virtual.
+	Azure Virtual Network proporciona un entorno seguro y aislado en el que ejecutar aplicaciones y máquinas virtuales. Utilice sus propias direcciones IP privadas y defina subredes, directivas de control de acceso, etc. Para usar Azure como su propio centro de datos, cree una red virtual.
 
 * ¿Qué es una *Subnet*?
 
-Las redes virtuales se pueden subdividir en subredes para hacer coincidir la implementación de la nube con la implementación local. Es posible transferir una máquina a otra subred dentro de una red virtual, pero no a la subred de otra red virtual. Interfaz a Internet: una máquina virtual está conectada a una subred a través de una tarjeta de interfaz de red (NIC).
+	Las redes virtuales se pueden subdividir en subredes para hacer coincidir la implementación de la nube con la implementación local. Es posible transferir una máquina a otra subred dentro de una red virtual, pero no a la subred de otra red virtual. Interfaz a Internet: una máquina virtual está conectada a una subred a través de una tarjeta de interfaz de red (NIC).
 
 * ¿Para qué sirven los *address space* y *address range*?
 
-*Address space:* al establecer una red virtual, es esencial designar un espacio de direcciones IP personalizado que utilice direcciones públicas y privadas (RFC 1918). Azure asigna una dirección IP privada a los recursos de la red virtual según el espacio de direcciones que especifique. Por ejemplo, si una máquina virtual se implementa en una red virtual con espacio de direcciones, 10.0
+	**Address space:** al establecer una red virtual, es esencial designar un espacio de direcciones IP personalizado que utilice direcciones públicas y privadas (RFC 1918). Azure asigna una dirección IP privada a los recursos de la red virtual según el espacio de direcciones que especifique. Por ejemplo, si una máquina virtual se implementa en una red virtual con espacio de direcciones, 10.0
 
-*Address range* el rango debe estar dentro del espacio de direcciones en el que ingresó a la red virtual. El rango más pequeño que se puede definir es 29, que proporciona ocho direcciones IP para la subred. Azure reserva la primera y la última dirección en cada subred para el cumplimiento del protocolo.
+	**Address range** el rango debe estar dentro del espacio de direcciones en el que ingresó a la red virtual. El rango más pequeño que se puede definir es 29, que proporciona ocho direcciones IP para la subred. Azure reserva la primera y la última dirección en cada subred para el cumplimiento del protocolo.
 
 * ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. 
 
-Las zonas de disponibilidad de Azure son centros de datos que están física y lógicamente separados, cada uno con su propia fuente de alimentación, red y sistema de refrigeración. Cuando están conectados a una red con latencias extremadamente altas, se convierten en un bloque de creación para entregar aplicaciones de alta disponibilidad.
+	Las zonas de disponibilidad de Azure son centros de datos que están física y lógicamente separados, cada uno con su propia fuente de alimentación, red y sistema de refrigeración. Cuando están conectados a una red con latencias extremadamente altas, se convierten en un bloque de creación para entregar aplicaciones de alta disponibilidad.
 
-En el ejercicio realizado seleccionamos 3 zonas de disponibilidad diferentes para curarse en salud con respecto a las fallas que se pueden presentar en cada una de las VM y de esta fprma garantizar resiliencia protegiendo las aplicaciones y los datos del centro de datos
+	En el ejercicio realizado seleccionamos 3 zonas de disponibilidad diferentes para curarse en salud con respecto a las fallas que se pueden presentar en cada una de las VM y de esta fprma garantizar resiliencia protegiendo las aplicaciones y los datos del centro de datos
 
 *¿Qué significa que una IP sea *zone-redundant*?
 
-Significa que la IP es replicada por la plataforma automaticamente en todas las zonas
+	Significa que la IP es replicada por la plataforma automaticamente en todas las zonas
 
 * ¿Cuál es el propósito del *Network Security Group*?
 
-Es una línea de defensa en Azure para la protección de nuestros recursos, usando un firewall de capa 4 que filtrará el tráfico en base a direcciones IP de origen y destino, puertos de origen y destino y protocolo (TCP / UDP), pero no por contenido.
+	Es una línea de defensa en Azure para la protección de nuestros recursos, usando un firewall de capa 4 que filtrará el tráfico en base a direcciones IP de origen y destino, puertos de origen y destino y protocolo (TCP / UDP), pero no por contenido.
 
 * Informe de newman 1 (Punto 2)
 
@@ -624,9 +631,12 @@ En esta segunda parte se llevo a cabo el ejercio usando los Json atravez de newm
 
 Para estas pruebas con newman es importante tener en claro la siguiente informacion con respecto a las Ip's de los componentes:
 
-vm1 --> 52.155.164.189
+vm1 --> 52.155.164.189 
+
 vm2 --> 52.155.165.245
+
 vm3 --> 52.156.204.48
+
 vm4 --> 20.82.224.241
 
 SCALABILITY_LAB_LOAD_BALANCER_IP --> 20.82.249.93
@@ -660,21 +670,21 @@ Posteriormente se realizo una prueba de 4 solicitudes concurrentes paralelas en 
 
 Contando con el siguiente rendimiento de CPU en cada maquina respectiva:
 
-##VM1
+###VM1
 
-![](images/solucion/consumoParalelovm4.PNG)
+![](images/solucion/consumoParalelovm4.JPG) 
 
-##VM2
+###VM2
 
-![](images/solucion/consumoParalelovm2.PNG)
+![](images/solucion/consumoParalelovm2.JPG)
 
-##VM3
+###VM3
 
-![](images/solucion/consumoParalelovm1.PNG)
+![](images/solucion/consumoParalelovm1.JPG)
 
-##VM4
+###VM4
 
-![](images/solucion/consumoParalelovm2.PNG)
+![](images/solucion/consumoParalelovm2.JPG)
 
 
 * Presente el Diagrama de Despliegue de la solución.
