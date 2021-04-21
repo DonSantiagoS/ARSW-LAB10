@@ -428,6 +428,7 @@ Antes de continuar puede eliminar el grupo de recursos anterior para evitar gast
 
 ![](images/part2/part2-vn-create.png)
 
+
 #### Crear las maquinas virtuales (Nodos)
 
 Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar en 3 diferentes zonas de disponibilidad. Después las agregaremos al balanceador de carga.
@@ -457,6 +458,8 @@ Ahora vamos a crear 3 VMs (VM1, VM2 y VM3) con direcciones IP públicas standar 
 ![](images/solucion/vm1net.PNG)
 
 ##VM2
+
+![](images/solucion/vm1net.PNG)
 
 ##VM3
 ![](images/solucion/vm3net.PNG)
@@ -542,16 +545,159 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 
 **Preguntas**
 
-* ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
+* ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?  
+
+		+ **Equilibrador de carga público:** Proporciona conexiones de salida para máquinas virtuales dentro de la red virtual, dichas conexiones se establecen convirtiendo sus direcciones IP privadas en direcciones IP públicas.
+		+ **Equilibrador de carga privado:** Se utiliza para equilibrar el trafico dentro de la red virtual tambien cuando solo se necesitan direcciones IP privadas en el front-end.
+
+* ¿Qué es SKU, qué tipos hay y en qué se diferencian?
+		
+		Azure Container Registry está disponible en una variedad de niveles de servicio (también conocidos como SKU). SKU (Stock Keeping Unit) es un código único asignado a un servicio o producto dentro de azure que representa la capacidad de adquirir existencias.
+		
+		+ Basico: Un punto de entrada con bajos costos para que los desarrolladores aprendan sobre Azure Container Registry. Los registros básicos tienen las mismas capacidades de programación que los registros estándar y premium.
+		+ Estandar: Los registros estándar tienen las mismas capacidades que los registros básicos, pero con un mayor rendimiento de imágenes y almacenamiento incluido. Los registros estándar deben satisfacer las necesidades de la gran mayoría de estudios de producción.
+		+ Premium: Los registros premium proporcionan la mayor cantidad de almacenamiento incluido y operaciones simultáneas, lo que permite producciones a gran escala. Además de un mayor rendimiento de imágenes, también incluye características como la replicación geoespacial para administrar un solo registro en múltiples regiones y confianza en el contenido para el desarrollo de etiquetas de imagen, enlace privado con puntos finales privados para restringir el acceso al registro.
+		
+		Azure presenta la siguiente de los diferentes Sku:
+		
+		![](images/solucion/sku.PNG)
+	
+* ¿Por qué el balanceador de carga necesita una IP pública?
+	
+	Para ser accesible desde Internet, se debe asociar a una dirección IP pública con una instancia de Azure Load Balancer la cual sirve como una dirección IP de carga equilibrada
+
 * ¿Cuál es el propósito del *Backend Pool*?
+	
+	Definir cómo evaluar diferentes Back-Ends utilizando sondas de estado, dichos Back-Ends se despliegan dentro de una misma region o en diferente regiones, los cuales pieden estar en modo de despliegue Activo/Activo o en configuracion Activo/Pasivo, Backend Pool se encarga tambien de lograr el equilibrio de carga entre ellos, es decir, definir el conjunto de recursos que proporcionarán tráfico para una regla de equilibrio de carga específica.
+	
 * ¿Cuál es el propósito del *Health Probe*?
+
+	Cuando se usan las reglas de equilibro de carga con Azure Load Balancer, es de gran importancia especificar las sonas de estado para permitir que Load balancer detecte el estado del punto de conexion de Backend, estas sondas pueden admitir distintos protocolos segun el SKU TCP, HTTP o HTTPS, y se debe configurar junto con sus respectivas respuestas de forma que determinen que instancias del grupo de backend recibiran los nuevos flojos, tambien puede ser utilizada para encontrar fallas en la aplicacion de algun endpoint del backend. Ademas es posible generar una respuesta personalizada a una sonda de estado usandola para el controll de flujo y de esta forma administrar la carga o el tiempo de inactividad de manera planeada.
+
 * ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
-* ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
-* ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
+
+Define la configuración de IP de interfaz para el tráfico entrante y el grupo de back-end para recibir el tráfico, junto con el puerto de origen y destino requerido. Para Azure Load Balancer, el modo de distribución predeterminado es un hash de tuplas con cinco elementos. Los siguientes son los contenidos de la tupla:
+
++ IP de origen
++ Puerto de origen
++ IP de destino
++ Puerto de destino
++ Tipo de protocolo
+
+Proporciona equilibrio de carga entrante y la regla de salida controla el NAT saliente proporcionado para la VM. Este inicio rápido utiliza dos grupos de backend separados, uno para entrada y otro para salida, para ilustrar la capacidad y permitir flexibilidad para este escenario. Con las reglas de salida establecidas, tiene un poder declarativo completo sobre la conectividad a Internet. Las reglas de salida le permiten escalar y ajustar esta capacidad a sus necesidades específicas.
+
+El hash se utiliza para distribuir el tráfico entre los servidores disponibles. El algoritmo solo proporciona adhesión dentro de una única sesión de transporte. Siguiendo el punto de conexión con equilibrio de carga, todos los paquetes de una misma sesión se envían a la misma dirección IP del centro de datos. Cuando un cliente inicia una nueva sesión desde la misma dirección IP, el puerto de origen cambia, lo que hace que el tráfico fluya a otro punto de conexión en el centro de datos.
+
+Para asignar tráfico a los servidores disponibles, el modo utiliza un hash de tupla de dos elementos (IP de origen e IP de destino) o tres elementos (IP de origen, IP de destino y tipo de protocolo). Las conexiones que han comenzado desde el mismo equipo del cliente van al mismo punto de conexión en el centro de datos gracias al uso de la similitud de la IP de origen.
+
+* ¿Qué es una *Virtual Network*?  
+
+Azure Virtual Network proporciona un entorno seguro y aislado en el que ejecutar aplicaciones y máquinas virtuales. Utilice sus propias direcciones IP privadas y defina subredes, directivas de control de acceso, etc. Para usar Azure como su propio centro de datos, cree una red virtual.
+
+* ¿Qué es una *Subnet*?
+
+Las redes virtuales se pueden subdividir en subredes para hacer coincidir la implementación de la nube con la implementación local. Es posible transferir una máquina a otra subred dentro de una red virtual, pero no a la subred de otra red virtual. Interfaz a Internet: una máquina virtual está conectada a una subred a través de una tarjeta de interfaz de red (NIC).
+
+* ¿Para qué sirven los *address space* y *address range*?
+
+*Address space:* al establecer una red virtual, es esencial designar un espacio de direcciones IP personalizado que utilice direcciones públicas y privadas (RFC 1918). Azure asigna una dirección IP privada a los recursos de la red virtual según el espacio de direcciones que especifique. Por ejemplo, si una máquina virtual se implementa en una red virtual con espacio de direcciones, 10.0
+
+*Address range* el rango debe estar dentro del espacio de direcciones en el que ingresó a la red virtual. El rango más pequeño que se puede definir es 29, que proporciona ocho direcciones IP para la subred. Azure reserva la primera y la última dirección en cada subred para el cumplimiento del protocolo.
+
+* ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. 
+
+Las zonas de disponibilidad de Azure son centros de datos que están física y lógicamente separados, cada uno con su propia fuente de alimentación, red y sistema de refrigeración. Cuando están conectados a una red con latencias extremadamente altas, se convierten en un bloque de creación para entregar aplicaciones de alta disponibilidad.
+
+En el ejercicio realizado seleccionamos 3 zonas de disponibilidad diferentes para curarse en salud con respecto a las fallas que se pueden presentar en cada una de las VM y de esta fprma garantizar resiliencia protegiendo las aplicaciones y los datos del centro de datos
+
+*¿Qué significa que una IP sea *zone-redundant*?
+
+Significa que la IP es replicada por la plataforma automaticamente en todas las zonas
+
 * ¿Cuál es el propósito del *Network Security Group*?
+
+Es una línea de defensa en Azure para la protección de nuestros recursos, usando un firewall de capa 4 que filtrará el tráfico en base a direcciones IP de origen y destino, puertos de origen y destino y protocolo (TCP / UDP), pero no por contenido.
+
 * Informe de newman 1 (Punto 2)
+
+En esta segunda parte se llevo a cabo el ejercio usando los Json atravez de newman, tal como se realizo en la primera parte, de esta forma verificando el load balancer implementado observando su respectivo funcionamiento con las 3 maquinas creadas.
+
+Para estas pruebas con newman es importante tener en claro la siguiente informacion con respecto a las Ip's de los componentes:
+
+vm1 --> 52.155.164.189
+vm2 --> 52.155.165.245
+vm3 --> 52.156.204.48
+vm4 --> 20.82.224.241
+
+SCALABILITY_LAB_LOAD_BALANCER_IP --> 20.82.249.93
+
+
+Primeramente se realizo una prueba con el Json respectivo con newman usando el siguiente comando:
+
+```
+newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
+```
+
+Esto con el fin de verificar que estaba funcionado de manera correcta, obteniendo como resultado para un total de 10 iteraciones un tiempo de 4 minutos con 55.5 segundos y un tiempo promedio de 29 segundos por solicitud
+
+![](images/solucion/loadCompletoUno.PNG)
+
+Ahora bien se realizo la solicitud de manera paralela obteniendo como resultado una mejora de tiempo con respecto al anterior ejercicio, obteniendo un tiempo total de 3 minutos con 45.1 segundos y un tiempo promedio de 22.4 segundos por solicitud
+
+![](images/solucion/completoUltimoUno.PNG)
+
+Posteriormente se realizo la prueba usando el siguiente comando, obteniendo como resultado una totalidad el 100% exitoso, sin presentar errores y con un tiempo promedio y similar a la primera prueba
+
+```
+newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 & newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
+```
+
+![](images/solucion/completoUltimoDos.PNG)
+
+Posteriormente se realizo una prueba de 4 solicitudes concurrentes paralelas en cada una de las maquinas propuestas obteniendo como resultado que en de las VM utilizadas se encontro un error, y 9 exitos de las iteraciones y en una 4 VM se encontro con dos errores, y 8 exitos, dos de estas maquinas tuvieron un tiempo aproximado de 5 minutos y medio y las otras dos maquinas un tiempo estimado de 4 minutos y medio como es posible evidenciar en la siguiente imagen
+
+![](images/solucion/los4Simultaneo.PNG)
+
+Contando con el siguiente rendimiento de CPU en cada maquina respectiva:
+
+##VM1
+
+![](images/solucion/consumoParalelovm4.PNG)
+
+##VM2
+
+![](images/solucion/consumoParalelovm2.PNG)
+
+##VM3
+
+![](images/solucion/consumoParalelovm1.PNG)
+
+##VM4
+
+![](images/solucion/consumoParalelovm2.PNG)
+
+
 * Presente el Diagrama de Despliegue de la solución.
 
 
 
+# Control de versiones
 
+por: [Santiago Buitrago](https://github.com/DonSantiagoS) 
+
+Version: 1.0
+Fecha: 20 de Abril 2021
+
+## Autor
+
+* **Santiago Buitrago** - *Laboratorio N°10* - [DonSantiagoS](https://github.com/DonSantiagoS)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## Licencia 
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Agradecimientos
+
+* Persistencia en lograr el objetivo
